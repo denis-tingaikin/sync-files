@@ -1,9 +1,9 @@
 # Sync files action
 
-This action syncs a repository with another repository.
+This action syncs repository files with another repository.
 
 
-```
+```yaml
   git-author-email:
     description: 'email of the commiter'
     required: true
@@ -65,7 +65,7 @@ Space-separated paths of files that should be excluded from sync.
 
 
 ## Example usage
-```
+```yaml
 uses: actions/sync-files@v1
 with:
   git-author-email: 'octocat@email'

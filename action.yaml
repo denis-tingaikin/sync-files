@@ -2,7 +2,7 @@ branding:
   icon: activity
   color: gray-dark
 name: 'Sync files'
-description: 'This action syncs a repository with another repository'
+description: 'This action syncs repository files with another repository.'
 inputs:
   git-author-email:
     description: 'The email of the committer.'
