@@ -1,3 +1,6 @@
+branding:
+  icon: activity
+  color: gray-dark
 name: 'Sync files'
 description: 'This action syncs a repository with another repository'
 inputs:
