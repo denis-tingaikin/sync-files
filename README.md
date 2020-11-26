@@ -65,7 +65,7 @@ Space-separated paths of files that should be excluded from sync.
 
 
 ## Example usage
-
+```
 uses: actions/sync-files@v1
 with:
   git-author-email: 'octocat@email'
@@ -73,4 +73,4 @@ with:
   git-author-token: ${ SECRETS_TOKEN }
   src-repository: organization2/repo2
   dst-repository: organization1/repo1
- 
+ ```
