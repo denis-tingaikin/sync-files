@@ -18,16 +18,18 @@ getDeletedFiles() {
 }
 
 checkOrAddTemplateIgnore() {
-    if [ ! -f .templateignore ]; then
-        touch .templateignore
-        git add .templateignore
+    if [ ! -f .syncignore ]; then
+        touch .syncignore
+        git add .syncignore
     fi
 }
 
 createCommitMessage() {
-    echo "Sync files with ${GITHUB_SERVER_URL}/${SRC_REPOSITORY}" >> /tmp/commit-message
+    echo "Sync files with ${SRC_REPOSITORY}" >> /tmp/commit-message
     echo "" >> /tmp/commit-message
-    echo "Version: $(git rev-parse HEAD)"   
+    echo "This PR syncs files with ${GITHUB_SERVER_URL}/${SRC_REPOSITORY}" >> /tmp/commit-message
+    echo "" >> /tmp/commit-message
+    echo "Revision: ${GITHUB_SERVER_URL}/${SRC_REPOSITORY}/commits/$(git rev-parse HEAD)"   
     echo "" >> /tmp/commit-message
     git log -1 >> /tmp/commit-message
 }
@@ -44,12 +46,12 @@ main() {
     git checkout $currentBranch
     checkOrAddTemplateIgnore
     git diff source/${SRC_BRANCH_NAME} -R | git apply
-    git add $(git ls-tree --name-only -r source/${SRC_BRANCH_NAME} | grep "${REGEX}")
-    git restore -- .templateignore
+    git add $(git ls-tree --name-only -r source/${SRC_BRANCH_NAME} | grep -E "${REGEX}")
+    git restore -- .syncignore
     while read -r path || [[ -n "$path" ]]; do
         git restore --staged -- $path
         git restore -- $path
-    done < .templateignore
+    done < .syncignore
     for path in $EXCLUDE_FILES; do
         git restore --staged -- $path
         git restore -- $path
