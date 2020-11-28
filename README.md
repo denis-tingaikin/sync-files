@@ -35,17 +35,9 @@ This action syncs repository files with another repository.
 
 **Required** The name of the committer.
 
-### `git-author-token`
-
-**Required** The GitHub token of the committer.
-
 ### `src-repository`
 
-**Required** The GitHub source repository.
-
-### `dst-repository`
-
-**Required** The GitHub destination repository.
+**Required** The GitHub repository with which synchronizing.
 
 ### `allow-files-pattern`
 
@@ -62,9 +54,15 @@ Space-separated paths of files that should be excluded from sync.
 
 ## Example usage
 ```yaml
-uses: actions/sync-files@v1
-with:
-  git-author-email: 'octocat@email'
-  git-author-name: 'Mona the Octocat'
-  src-repository: organization1/repo1
+    - name: Checkout files
+      uses: actions/checkout@v2
+      with:
+        repository: octocat/dst-repsotiory
+        token: ${{ secrets.octocat_token }}
+    - name: Sync files with dst-octocat-repsotiory!
+      uses: actions/sync-files@main
+      with:
+        git-author-email: 'octocat@github.com'
+        git-author-name: 'Octocat'
+        src-repository: octocat/src-repsotiory
  ```

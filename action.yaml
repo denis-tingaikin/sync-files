@@ -11,12 +11,12 @@ inputs:
     description: 'The name of the committer.'
     required: true
   src-repository:
-    description: ' The GitHub source repository.'
+    description: 'The GitHub repository with which synchronizing.'
     required: true
   allow-files-pattern:
     description: 'The regex pattern for files that allowed to update. By default all files.'
     default: '.*'
-  branch-name:
+  src-branch-name:
     descripion: 'The branch of the source repository to sync. By default master.'
     default: 'main'
   exclude-files:
@@ -27,7 +27,7 @@ runs:
   steps: 
     - run: ${{ github.action_path }}/main.sh
       env:
-        SRC_BRANCH_NAME: ${{ inputs.branch-name }}
+        SRC_BRANCH_NAME: ${{ inputs.src-branch-name }}
         SRC_REPOSITORY: ${{ inputs.src-repository }}
         AUTHOR_EMAIL: ${{ inputs.git-author-email }}
         AUTHOR_NAME: ${{ inputs.git-author-name }}
