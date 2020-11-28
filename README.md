@@ -1,5 +1,7 @@
 # Sync files action
 
+**Required** actions/checkout@v2 with passed token.
+
 This action syncs repository files with another repository.
 
 
@@ -10,14 +12,8 @@ This action syncs repository files with another repository.
   git-author-name:
     description: 'name of the commiter'
     required: true
-  git-author-token:
-    description: 'github token of the commiter'
-    required: true
   src-repository:
     description: 'source repository'
-    required: true
-  dst-repository:
-    description: 'destination repository'
     required: true
   allow-files-pattern:
     description: 'regex pattern for files that allowed to update'
@@ -70,7 +66,5 @@ uses: actions/sync-files@v1
 with:
   git-author-email: 'octocat@email'
   git-author-name: 'Mona the Octocat'
-  git-author-token: ${ SECRETS_TOKEN }
-  src-repository: organization2/repo2
-  dst-repository: organization1/repo1
+  src-repository: organization1/repo1
  ```

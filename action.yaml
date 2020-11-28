@@ -10,14 +10,8 @@ inputs:
   git-author-name:
     description: 'The name of the committer.'
     required: true
-  git-author-token:
-    description: 'The GitHub token of the committer.'
-    required: true
   src-repository:
     description: ' The GitHub source repository.'
-    required: true
-  dst-repository:
-    description: 'The GitHub destination repository.'
     required: true
   allow-files-pattern:
     description: 'The regex pattern for files that allowed to update. By default all files.'
@@ -30,74 +24,5 @@ inputs:
 runs:
   using: "composite"
   steps: 
-      - name: Checkout ${{ intputs.src-repository }}
-        uses: actions/checkout@v2
-        with:
-          path: ${{ intputs.src-repository }}
-          repository: ${{ intputs.src-repository }}
-          token: ${{ inputs.git-author-token }}
-      - name: Find merged PR
-        uses: jwalton/gh-find-current-pr@v1
-        id: findPr
-        with:
-          github-token: ${{ github.token }}
-      - name: Create commit message
-        working-directory: ${{ intputs.src-repository }}
-        run: |
-          echo "Sync files to latest version from ${{ intputs.src-repository }}#${{ steps.findPr.outputs.pr }}" >> /tmp/commit-message
-      - name: Find deleted files
-        working-directory: ${{ intputs.src-repository }}
-        run: |
-          addedFiles=$(git log --all --pretty=format: --name-only --diff-filter=A | sort -u)
-          currentFiles=$(git ls-files)
-          deletedFiles=""
-          for addedFile in $addedFiles; do 
-              match="false"
-              for currentFile in $currentFiles; do
-                  if [ "${addedFile}" = "${currentFile}" ]; then
-                      match="true"
-                      break
-                  fi
-              done
-              if [ "${match}" = "false" ]; then
-                  deletedFiles="${deletedFiles} ${addedFile}"
-              fi
-          done
-          echo DELETED_FILES_BY_TEMPLATE=${deletedFiles} >> $GITHUB_ENV
-      - name: Checkout ${{ inputs.dst-repository }}
-        uses: actions/checkout@v2
-        with:
-          path: ${{ inputs.dst-repository }}
-          repository: ${{ inputs.dst-repository }}
-          token: ${{ inputs.git-author-token }}
-        run: |
-          echo Starting to update repositotry ${{ inputs.dst-repository }}
-          git config --global user.email ${{ inputs.git-author-email }}
-          git config --global user.name ${{ inputs.git-author-name }}
-          git remote add template ${GITHUB_SERVER_URL}/${{ intputs.src-repository }}.git
-          git fetch template
-          if [ ! -f .templateignore ]; then
-            touch .templateignore
-            git add .templateignore
-          fi
-          git diff template/${{ inputs.branch-name }} -R | git apply
-          git add $(git ls-tree --name-only -r template/${{ inputs.branch-name }} | grep "${{ exclude-files.allow-files-pattern }}")
-          git restore -- .templateignore
-          while read -r line || [[ -n "$line" ]]; do
-            git restore --staged -- $line
-            git restore -- $line
-          done < .templateignore
-          for line in ${{ inputs.exclude-files }}; do
-            git restore --staged -- $line
-            git restore -- $line
-          done
-          for deletedFile in ${DELETED_FILES_BY_TEMPLATE}; do
-            rm -f $deletedFile
-            git add $deletedFile
-          done
-          if ! [ -n "$(git diff --cached --exit-code)" ]; then
-            exit 0;
-          fi
-          git commit -s -F /tmp/commit-message
-          git checkout -b sync/${{ intputs.src-repository }}
-          git push -f origin sync/${{ intputs.src-repository }}
+    - run: ${{ github.action_path }}/main.sh
+      shell: bash
