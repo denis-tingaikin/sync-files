@@ -29,7 +29,7 @@ createCommitMessage() {
     echo "" >> /tmp/commit-message
     echo "This PR syncs files with ${GITHUB_SERVER_URL}/${SRC_REPOSITORY}" >> /tmp/commit-message
     echo "" >> /tmp/commit-message
-    echo "Revision: ${GITHUB_SERVER_URL}/${SRC_REPOSITORY}/commits/$(git rev-parse HEAD)"   
+    echo "Revision: ${GITHUB_SERVER_URL}/${SRC_REPOSITORY}/commits/$(git rev-parse HEAD)" >> /tmp/commit-message 
     echo "" >> /tmp/commit-message
     git log -1 >> /tmp/commit-message
 }
