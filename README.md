@@ -1,28 +1,29 @@
 # Sync files action
 
-**Required** actions/checkout@v2 with passed token.
-
 This action syncs repository files with another repository.
+
+Note: **Required** [actions/checkout@v2](https://github.com/actions/checkout)with access token.
 
 
 ```yaml
   git-author-email:
-    description: 'email of the commiter'
+    description: 'The email of the committer.'
     required: true
   git-author-name:
-    description: 'name of the commiter'
+    description: 'The name of the committer.'
     required: true
   src-repository:
-    description: 'source repository'
+    description: 'The GitHub repository with which synchronizing.'
     required: true
   allow-files-pattern:
-    description: 'regex pattern for files that allowed to update'
-    default: ".*"
-  branch-name:
-    descripion: 'name of branch to get updates'
-    default: master
+    description: 'The regex pattern for files that allowed to update. By default all files.'
+    default: '.*'
+  src-branch-name:
+    descripion: 'The branch of the source repository to sync. By default master.'
+    default: 'main'
   exclude-files:
-    description: 'space-separated paths of files that should be excluded'
+    default: ''
+    description: 'Space-separated paths of files that should be excluded from sync.'
 ```
 
 ## Inputs
