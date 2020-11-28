@@ -1,5 +1,5 @@
 getDeletedFiles() {
-    addedFiles=$(git log --all --pretty=format: --name-only --diff-filter=A | sort -u)
+    addedFiles=$(git log source/${SRC_BRANCH_NAME} --pretty=format: --name-only --diff-filter=A | sort -u)
     currentFiles=$(git ls-files)
     deletedFiles=""
     for addedFile in $addedFiles; do 
@@ -17,7 +17,7 @@ getDeletedFiles() {
     echo $deletedFiles
 }
 
-checkOrAddTemplateIgnore() {
+checkOrAddSyncIgnore() {
     if [ ! -f .syncignore ]; then
         touch .syncignore
         git add .syncignore
@@ -25,7 +25,7 @@ checkOrAddTemplateIgnore() {
 }
 
 createCommitMessage() {
-    echo "Sync files with ${SRC_REPOSITORY}" >> /tmp/commit-message
+    echo "Sync files with ${SRC_REPOSITORY}" > /tmp/commit-message
     echo "" >> /tmp/commit-message
     echo "This PR syncs files with ${GITHUB_SERVER_URL}/${SRC_REPOSITORY}" >> /tmp/commit-message
     echo "" >> /tmp/commit-message
@@ -44,7 +44,7 @@ main() {
     deletedFiles=$(getDeletedFiles)
     createCommitMessage
     git checkout $currentBranch
-    checkOrAddTemplateIgnore
+    checkOrAddSyncIgnore
     git diff source/${SRC_BRANCH_NAME} -R | git apply
     git add $(git ls-tree --name-only -r source/${SRC_BRANCH_NAME} | grep -E "${REGEX}")
     git restore -- .syncignore
@@ -56,7 +56,7 @@ main() {
         git restore --staged -- $path
         git restore -- $path
     done
-    for deletedFile in ${DELETED_FILES_BY_TEMPLATE}; do
+    for deletedFile in $deletedFiles; do
         rm -f $deletedFile
         git add $deletedFile
     done
