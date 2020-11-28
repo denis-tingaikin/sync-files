@@ -48,14 +48,6 @@ main() {
     git diff source/${SRC_BRANCH_NAME} -R | git apply
     git add $(git ls-tree --name-only -r source/${SRC_BRANCH_NAME} | grep -E "${REGEX}")
     git restore -- .syncignore
-    while read -r path || [[ -n "$path" ]]; do
-        git restore --staged -- $path
-        git restore -- $path
-    done < .syncignore
-    for path in $EXCLUDE_FILES; do
-        git restore --staged -- $path
-        git restore -- $path
-    done
     for deletedFile in $deletedFiles; do
         {
             rm -f $deletedFile
@@ -63,6 +55,14 @@ main() {
         } || {
             echo $deletedFile is already deleted
         }
+    done
+    while read -r path || [[ -n "$path" ]]; do
+        git restore --staged -- $path
+        git restore -- $path
+    done < .syncignore
+    for path in $EXCLUDE_FILES; do
+        git restore --staged -- $path
+        git restore -- $path
     done
     if ! [ -n "$(git diff --cached --exit-code)" ]; then
         exit 0;
