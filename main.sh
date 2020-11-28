@@ -1,5 +1,5 @@
 getDeletedFiles() {
-    addedFiles=$(git log source/${SRC_BRANCH_NAME} --pretty=format: --name-only --diff-filter=A | sort -u)
+    addedFiles=$(git log source/${SRC_BRANCH_NAME} --pretty=format: --name-only --diff-filter=AR | sort -u)
     currentFiles=$(git ls-files)
     deletedFiles=""
     for addedFile in $addedFiles; do 
@@ -57,8 +57,12 @@ main() {
         git restore -- $path
     done
     for deletedFile in $deletedFiles; do
-        rm -f $deletedFile
-        git add $deletedFile
+        {
+            rm -f $deletedFile
+            git add $deletedFile
+        } || {
+            echo $deletedFile is already deleted
+        }
     done
     if ! [ -n "$(git diff --cached --exit-code)" ]; then
         exit 0;
