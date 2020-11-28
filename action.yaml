@@ -15,14 +15,22 @@ inputs:
     required: true
   allow-files-pattern:
     description: 'The regex pattern for files that allowed to update. By default all files.'
-    default: ".*"
+    default: '.*'
   branch-name:
     descripion: 'The branch of the source repository to sync. By default master.'
-    default: master
+    default: 'main'
   exclude-files:
+    default: ''
     description: 'Space-separated paths of files that should be excluded from sync.'
 runs:
   using: "composite"
   steps: 
     - run: ${{ github.action_path }}/main.sh
+      env:
+        SRC_BRANCH_NAME: ${{ inputs.branch-name }}
+        SRC_REPOSITORY: ${{ inputs.src-repository }}
+        AUTHOR_EMAIL: ${{ inputs.git-author-email }}
+        AUTHOR_NAME: ${{ inputs.git-author-name }}
+        REGEX: ${{ inputs.allow-files-pattern }}
+        EXCLUDE_FILES: ${{ inputs.exclude-files }}
       shell: bash
