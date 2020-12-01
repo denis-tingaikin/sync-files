@@ -19,26 +19,30 @@ inputs:
   sync-branch-name:
     descripion: 'The branch of the source repository to sync. By default master.'
     default: 'main'
-  directory:
-    descripion: 'The working directory.'
+  working-directory:
+    descripion: 'The working working-directory.'
     default: ''
   result-branch-name:
-    descripion: 'The working directory.'
+    descripion: 'The name of the branch that will be created on the action done.'
     default: sync/{{ inputs.sync-repository }}
   exclude-files:
     default: ''
     description: 'Space-separated paths of files that should be excluded from sync.'
+  sync-ignore-file-name:
+    default: '.syncignore'
+    description: 'The path to file in the destination repository that contains space-separated paths to files that should be excluded from sync.'
 runs:
   using: "composite"
   steps: 
     - run: ${{ github.action_path }}/main.sh
       env:
-        SRC_BRANCH_NAME: ${{ inputs.sync-branch-name }}
-        SRC_REPOSITORY: ${{ inputs.sync-repository }}
+        SYNC_BRANCH_NAME: ${{ inputs.sync-branch-name }}
+        SYNC_REPOSITORY: ${{ inputs.sync-repository }}
         AUTHOR_EMAIL: ${{ inputs.git-author-email }}
         AUTHOR_NAME: ${{ inputs.git-author-name }}
         REGEX: ${{ inputs.allow-files-pattern }}
         EXCLUDE_FILES: ${{ inputs.exclude-files }}
-        DIRECTORY: ${{ inputs.directory }}
+        WORKING_DIRECTORY: ${{ inputs.working-directory }}
+        SYNC_IGNORE_FILE_NAME:  ${{ inputs.sync-ignore-file-name }}
         RESULT_BRANCH_NAME: ${{ inputs.result-branch-name }}
       shell: bash
