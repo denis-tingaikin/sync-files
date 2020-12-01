@@ -24,7 +24,7 @@ inputs:
     default: ''
   result-branch-name:
     descripion: 'The name of the branch that will be created on the action done.'
-    default: ''
+    default: sync/${{ github.repository }}
   exclude-files:
     default: ''
     description: 'Space-separated paths of files that should be excluded from sync.'

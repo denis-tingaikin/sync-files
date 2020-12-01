@@ -35,9 +35,6 @@ createCommitMessage() {
 }
 
 main() {
-    if [ "${RESULT_BRANCH_NAME}" == "" ]; then
-        RESULT_BRANCH_NAME=sync/${GITHUB_REPOSITORY}
-    fi
     pushd "${WORKING_DIRECTORY}"
     git config --global user.email ${AUTHOR_EMAIL}
     git config --global user.name ${AUTHOR_NAME}
