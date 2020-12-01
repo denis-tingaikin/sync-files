@@ -55,7 +55,6 @@ The branch of the source repository to sync. By default main.
 
 Space-separated paths of files that should be excluded from sync.
 
-
 ### `directory`
 
 The working directory.
