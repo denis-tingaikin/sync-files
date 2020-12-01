@@ -18,9 +18,9 @@ getDeletedFiles() {
 }
 
 checkOrAddSyncIgnore() {
-    if [ ! -f .syncignore ]; then
-        touch .syncignore
-        git add .syncignore
+    if [ ! -f ${SYNC_IGNORE_FILE_NAME} ]; then
+        touch ${SYNC_IGNORE_FILE_NAME}
+        git add ${SYNC_IGNORE_FILE_NAME}
     fi
 }
 
@@ -51,7 +51,7 @@ main() {
     checkOrAddSyncIgnore
     git diff source/${SYNC_BRANCH_NAME} -R | git apply
     git add $(git ls-tree --name-only -r source/${SYNC_BRANCH_NAME} | grep -E "${REGEX}")
-    git restore -- .syncignore
+    git restore -- ${SYNC_IGNORE_FILE_NAME}
     for deletedFile in $deletedFiles; do
         {
             rm -f $deletedFile
@@ -63,7 +63,7 @@ main() {
     while read -r path || [[ -n "$path" ]]; do
         git restore --staged -- $path
         git restore -- $path
-    done < .syncignore
+    done < ${SYNC_IGNORE_FILE_NAME}
     for path in $EXCLUDE_FILES; do
         git restore --staged -- $path
         git restore -- $path

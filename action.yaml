@@ -43,6 +43,6 @@ runs:
         REGEX: ${{ inputs.allow-files-pattern }}
         EXCLUDE_FILES: ${{ inputs.exclude-files }}
         WORKING_DIRECTORY: ${{ inputs.working-directory }}
-        SYNC_IGNORE_FILE_NAME:  ${{ inputs.sync-ignore-file-name }}
+        SYNC_IGNORE_FILE_NAME: ${{ inputs.sync-ignore-file-name }}
         RESULT_BRANCH_NAME: ${{ inputs.result-branch-name }}
       shell: bash
