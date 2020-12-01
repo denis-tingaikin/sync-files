@@ -35,7 +35,7 @@ createCommitMessage() {
 }
 
 main() {
-    pushd "${DIRECTORY}"
+    pushd "${WORKING_DIRECTORY}"
     git config --global user.email ${AUTHOR_EMAIL}
     git config --global user.name ${AUTHOR_NAME}
     currentBranch=$(git branch --show-current)
