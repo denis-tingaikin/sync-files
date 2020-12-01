@@ -19,6 +19,9 @@ inputs:
   src-branch-name:
     descripion: 'The branch of the source repository to sync. By default master.'
     default: 'main'
+  directory:
+    descripion: 'The working directory.'
+    default: ''
   exclude-files:
     default: ''
     description: 'Space-separated paths of files that should be excluded from sync.'
@@ -33,4 +36,5 @@ runs:
         AUTHOR_NAME: ${{ inputs.git-author-name }}
         REGEX: ${{ inputs.allow-files-pattern }}
         EXCLUDE_FILES: ${{ inputs.exclude-files }}
+        DIRECTORY: ${{ inputs.directory }}
       shell: bash

@@ -35,6 +35,7 @@ createCommitMessage() {
 }
 
 main() {
+    pushd "${DIRECTORY}"
     git config --global user.email ${AUTHOR_EMAIL}
     git config --global user.name ${AUTHOR_NAME}
     currentBranch=$(git branch --show-current)
@@ -71,6 +72,7 @@ main() {
     git checkout -b sync/${SRC_REPOSITORY}
     git push -f origin sync/${SRC_REPOSITORY}
     git checkout $currentBranch
+    popd
 }
 
 main

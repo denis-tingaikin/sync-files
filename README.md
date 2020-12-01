@@ -2,7 +2,7 @@
 
 This action syncs repository files with another repository.
 
-Note: **Required** [actions/checkout@v2](https://github.com/actions/checkout)with access token.
+Note: **Required** [actions/checkout@v2](https://github.com/actions/checkout) with passed access **token**.
 
 
 ```yaml
@@ -19,8 +19,11 @@ Note: **Required** [actions/checkout@v2](https://github.com/actions/checkout)wit
     description: 'The regex pattern for files that allowed to update. By default all files.'
     default: '.*'
   src-branch-name:
-    descripion: 'The branch of the source repository to sync. By default master.'
+    descripion: 'The branch of the source repository to sync. By default main.'
     default: 'main'
+  direcotory:
+    descripion: 'The working directory.'
+    default: ''
   exclude-files:
     default: ''
     description: 'Space-separated paths of files that should be excluded from sync.'
@@ -46,11 +49,16 @@ The regex pattern for files that allowed to update. By default all files.
 
 ### `branch-name`
 
-The branch of the source repository to sync. By default master.
+The branch of the source repository to sync. By default main.
 
 ### `exclude-files`
 
 Space-separated paths of files that should be excluded from sync.
+
+
+### `directory`
+
+The working directory.
 
 
 ## Example usage
@@ -61,7 +69,7 @@ Space-separated paths of files that should be excluded from sync.
         repository: octocat/dst-repsotiory
         token: ${{ secrets.octocat_token }}
     - name: Sync files with dst-octocat-repsotiory!
-      uses: actions/sync-files@main
+      uses: denis-tingajkin/sync-files@main
       with:
         git-author-email: 'octocat@github.com'
         git-author-name: 'Octocat'
