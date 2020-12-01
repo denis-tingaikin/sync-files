@@ -73,7 +73,7 @@ main() {
     fi
     git commit -s -F /tmp/commit-message
     git checkout -b ${RESULT_BRANCH_NAME}
-    git push -f origin sync/${SYNC_REPOSITORY}
+    git push -f origin ${RESULT_BRANCH_NAME}
     git checkout $currentBranch
     popd
 }
